@@ -1,6 +1,5 @@
 <Flags LDFLAGS="-rdynamic" />
 
-<use name="Kappa/DataFormats" />
 <use name="boost" />
 <use name="python" />
 <use name="root" />
