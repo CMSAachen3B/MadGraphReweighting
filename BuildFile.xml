@@ -1,0 +1,12 @@
+<Flags LDFLAGS="-rdynamic" />
+
+<use name="Kappa/DataFormats" />
+<use name="boost" />
+<use name="python" />
+<use name="root" />
+
+<flags ADD_SUBDIR="1"/>
+
+<export>
+   <lib   name="1"/>
+</export>
