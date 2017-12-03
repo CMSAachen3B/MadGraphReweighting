@@ -31,7 +31,7 @@ public:
 	typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float>> CartesianRMFLV;
 	
 	MadGraphTools(float mixingAngleOverPiHalf, std::string madgraphProcessDirectory, std::string madgraphParamCard, float alphaS,
-	              bool madGraphSortingHeavyBQuark=false);
+	              bool madGraphSortingHeavyBQuark=false, bool mg5aMCv2p5OrOlder=false);
 	virtual ~MadGraphTools();
 	
 	template<class TLHEParticle>
@@ -233,6 +233,7 @@ private:
 	}
 	
 	bool m_madGraphSortingHeavyBQuark = false;
+	bool m_mg5aMCv2p5OrOlder = false;
 	
 	PyObject* m_pyMadGraphTools = nullptr;
 	

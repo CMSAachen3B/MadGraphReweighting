@@ -4,8 +4,9 @@
 
 
 MadGraphTools::MadGraphTools(float mixingAngleOverPiHalf, std::string madgraphProcessDirectory, std::string madgraphParamCard, float alphaS,
-                             bool madGraphSortingHeavyBQuark) :
-	m_madGraphSortingHeavyBQuark(madGraphSortingHeavyBQuark)
+                             bool madGraphSortingHeavyBQuark, bool mg5aMCv2p5OrOlder) :
+	m_madGraphSortingHeavyBQuark(madGraphSortingHeavyBQuark),
+	m_mg5aMCv2p5OrOlder(mg5aMCv2p5OrOlder)
 {
 	// initialise interface to Python
 	if (! Py_IsInitialized())
