@@ -45,3 +45,23 @@ This function calls Python code, which in turn is "compiled" from Fortran code. 
 
 Apply as a weight `|M_new|^2 / |M_old|^2`, where `|M_old|^2` corresponds to the squared matrix element calculated for the MC scenario and `|M_new|^2` corresponds to any new scenario the even should be reweighted to. More details are found [here](https://cp3.irmp.ucl.ac.be/projects/madgraph/wiki/Reweight).
 
+
+### Trouble shooting
+
+#### MadGraph files for reweighting missing
+
+In case the reweighting gives unreasonable results or does not work properly, it might be helpful to run the MadGraph simulation first. First, MadGraph has to be checked out:
+```bash
+checkout_madgraph2p6.sh
+```
+Then the simulation can be run and the reweighting library compiled
+```bash
+madgraph2p6_simulation_ggh.sh
+madgraph2p6_simulation_vbf.sh
+```
+The simulation overwrites parameter cards in this repository, that need to be reverted to the committed version
+```bash
+cd $CMSSW_BASE/src/CMSAachen3B/MadGraphReweighting/
+git checkout -- data/ggh_2p6/Cards/*.dat
+git checkout -- data/vbf_2p6/Cards/*.dat
+```
