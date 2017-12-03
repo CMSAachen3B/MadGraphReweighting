@@ -1,11 +1,17 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cstdlib>
+
+#include <boost/algorithm/string/replace.hpp>
+
 #include <Python.h> // https://www.codeproject.com/Articles/11805/Embedding-Python-in-C-C-Part-I
 
 #include <Math/Boost.h>
 #include <Math/LorentzVector.h>
 #include <Math/PxPyPzE4D.h>
+#include <TDatabasePDG.h>
 
 
 
@@ -89,6 +95,32 @@ public:
 		return matrixElementSquared;
 	}
 	
+	static TDatabasePDG* GetDatabasePDG(std::string pdgDatabaseFilename="$ROOTSYS/etc/pdg_table.txt");
+	
+	template<class TLHEParticle>
+	static std::string GetProcess(std::vector<TLHEParticle*>& lheParticles, // the vector is sorted in-place to match MadGraph ordering scheme
+	                              TDatabasePDG* databasePDG, bool madGraphSortingHeavyBQuark=false, std::vector<int> bosonPdgIds={25})
+	{
+		// sorting of LHE particles for MadGraph
+		if (madGraphSortingHeavyBQuark)
+		{
+			std::sort(lheParticles.begin(), lheParticles.begin()+2, &MadGraphTools::MadGraphParticleOrderingHeavyBQuark<TLHEParticle>);
+			std::sort(lheParticles.begin()+3, lheParticles.end(), &MadGraphTools::MadGraphParticleOrderingHeavyBQuark<TLHEParticle>);
+		}
+		else
+		{
+			std::sort(lheParticles.begin(), lheParticles.begin()+2, &MadGraphTools::MadGraphParticleOrderingLightBQuark<TLHEParticle>);
+			std::sort(lheParticles.begin()+3, lheParticles.end(), &MadGraphTools::MadGraphParticleOrderingLightBQuark<TLHEParticle>);
+		}
+		
+		std::string process = "";
+		for (typename std::vector<TLHEParticle*>::iterator lheParticle = lheParticles.begin(); lheParticle != lheParticles.end(); ++lheParticle)
+		{
+			process += (std::string((std::find(bosonPdgIds.begin(), bosonPdgIds.end(), std::abs((*lheParticle)->pdgId)) != bosonPdgIds.end()) ? "_" : "") +
+			            std::string(databasePDG->GetParticle((*lheParticle)->pdgId)->GetName()));
+		}
+		return process;
+	}
 
 private:
 

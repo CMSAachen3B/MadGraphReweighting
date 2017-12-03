@@ -25,7 +25,7 @@ def me2_mg5aMCv2p5_or_older(connection):
 		del sys.modules["matrix2py"]
 	import matrix2py
 	
-	allmatrix2py.initialise(madgraph_param_card)
+	matrix2py.initialise(madgraph_param_card)
 	result = matrix2py.get_me(zip(*cartesian_four_momenta), alpha_s, 0)
 
 	sys.path.pop(0)

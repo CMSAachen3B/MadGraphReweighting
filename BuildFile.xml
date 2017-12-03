@@ -3,6 +3,7 @@
 <use name="boost" />
 <use name="python" />
 <use name="root" />
+<use name="rootEG" />
 
 <flags ADD_SUBDIR="1"/>
 

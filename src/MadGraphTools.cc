@@ -1,4 +1,3 @@
-#include <algorithm>
 
 #include "CMSAachen3B/MadGraphReweighting/interface/MadGraphTools.h"
 
@@ -24,7 +23,8 @@ MadGraphTools::MadGraphTools(float mixingAngleOverPiHalf, std::string madgraphPr
 	PyObject* pyMadgraphProcessDirectory = PyString_FromString(madgraphProcessDirectory.c_str());
 	PyObject* pyMadgraphParamCard = PyString_FromString(madgraphParamCard.c_str());
 	PyObject* pyAlphaS = PyFloat_FromDouble(alphaS);
-	PyObject* pyArguments = PyTuple_Pack(4, pyMixingAngleOverPiHalf, pyMadgraphProcessDirectory, pyMadgraphParamCard, pyAlphaS);
+	PyObject* pyMG5aMCv2p5OrOlder = (m_mg5aMCv2p5OrOlder ? Py_True : Py_False);
+	PyObject* pyArguments = PyTuple_Pack(5, pyMixingAngleOverPiHalf, pyMadgraphProcessDirectory, pyMadgraphParamCard, pyAlphaS, pyMG5aMCv2p5OrOlder);
 	m_pyMadGraphTools = PyObject_CallObject(pyClass, pyArguments);
 	PyErr_Print();
 	assert((m_pyMadGraphTools != nullptr) && PyObject_IsInstance(m_pyMadGraphTools, pyClass));
@@ -51,3 +51,10 @@ MadGraphTools::~MadGraphTools()
 	}
 }
 
+TDatabasePDG* MadGraphTools::GetDatabasePDG(std::string pdgDatabaseFilename)
+{
+	TDatabasePDG* databasePDG = new TDatabasePDG();
+	boost::algorithm::replace_first(pdgDatabaseFilename, "$ROOTSYS", std::getenv("ROOTSYS"));
+	databasePDG->ReadPDGTable(pdgDatabaseFilename.c_str());
+	return databasePDG;
+}
