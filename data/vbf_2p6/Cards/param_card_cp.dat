@@ -25,10 +25,10 @@ Block frblock
    11 1.000000e+00 # kAaa 
    12 1.000000e+00 # kHza 
    13 1.000000e+00 # kAza 
-   16 0.000000e+00 # kHzz 
-   17 0.000000e+00 # kAzz 
-   18 0.000000e+00 # kHww 
-   19 0.000000e+00 # kAww 
+   16 1.000000e+00 # kHzz 
+   17 1.000000e+00 # kAzz 
+   18 1.000000e+00 # kHww 
+   19 1.000000e+00 # kAww 
    20 0.000000e+00 # kHda 
    21 0.000000e+00 # kHdz 
    22 0.000000e+00 # kHdwR (real part of kHdw)
