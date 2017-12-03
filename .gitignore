@@ -2,3 +2,9 @@
 __init__.py
 *.pyc
 param.log
+data/vbf_2p5
+data/vbf_2p6
+data/ggh_2p5
+data/ggh_2p6
+MG5_aMC_v2_5_5
+MG5_aMC_v2_6_0
