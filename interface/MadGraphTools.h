@@ -41,7 +41,7 @@ public:
 	virtual ~MadGraphTools();
 	
 	template<class TLHEParticle>
-	double GetMatrixElementSquared(std::vector<TLHEParticle*>& lheParticles) const // the vector is sorted in-place to match MadGraph ordering scheme
+	double GetMatrixElementSquared(std::vector<TLHEParticle*>& lheParticles, std::vector<int> const& bosonPdgIds={25}) const // the vector is sorted in-place to match MadGraph ordering scheme
 	{
 		// sorting of LHE particles for MadGraph
 		if (m_madGraphSortingHeavyBQuark)
@@ -55,7 +55,7 @@ public:
 			std::sort(lheParticles.begin()+3, lheParticles.end(), &MadGraphTools::MadGraphParticleOrderingLightBQuark<TLHEParticle>);
 		}
 	
-		std::vector<CartesianRMFLV> particleFourMomenta = MadGraphTools::BoostToHiggsCMS<TLHEParticle>(lheParticles);
+		std::vector<CartesianRMFLV> particleFourMomenta = MadGraphTools::BoostToHiggsCMS<TLHEParticle>(lheParticles, bosonPdgIds);
 		std::vector<int> particlePdgIds = MadGraphTools::GetPdgIds<TLHEParticle>(lheParticles);
 
 		// construct Python list of four-momenta
@@ -100,7 +100,7 @@ public:
 	
 	template<class TLHEParticle>
 	static std::string GetProcess(std::vector<TLHEParticle*>& lheParticles, // the vector is sorted in-place to match MadGraph ordering scheme
-	                              TDatabasePDG* databasePDG, bool madGraphSortingHeavyBQuark=false, std::vector<int> bosonPdgIds={25})
+	                              TDatabasePDG* databasePDG, bool madGraphSortingHeavyBQuark=false, std::vector<int> const& bosonPdgIds={25})
 	{
 		// sorting of LHE particles for MadGraph
 		if (madGraphSortingHeavyBQuark)
@@ -229,7 +229,7 @@ private:
 	}
 	
 	template<class TLHEParticle>
-	static std::vector<CartesianRMFLV> BoostToHiggsCMS(std::vector<TLHEParticle*> lheParticles)
+	static std::vector<CartesianRMFLV> BoostToHiggsCMS(std::vector<TLHEParticle*> lheParticles, std::vector<int> const& bosonPdgIds={25})
 	{
 		std::vector<CartesianRMFLV> particleFourMomentaHiggsCMS;
 	
@@ -237,7 +237,8 @@ private:
 		CartesianRMFLV higgsFourMomentum = CartesianRMFLV(0,0,0,1);
 		for (typename std::vector<TLHEParticle*>::iterator lheParticle = lheParticles.begin(); lheParticle != lheParticles.end(); ++lheParticle)
 		{
-			if ((*lheParticle)->pdgId > 21) {
+			if (std::find(bosonPdgIds.begin(), bosonPdgIds.end(), std::abs((*lheParticle)->pdgId)) != bosonPdgIds.end())
+			{
 				 higgsFourMomentum = (*lheParticle)->p4;
 			}
 		}
