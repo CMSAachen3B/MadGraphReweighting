@@ -90,6 +90,7 @@ public:
 	
 		// clean up
 		Py_DECREF(pyParticleFourMomenta);
+		Py_DECREF(pyParticlePdgIds);
 		Py_DECREF(pyMethodName);
 	
 		return matrixElementSquared;
@@ -236,7 +237,7 @@ private:
 		CartesianRMFLV higgsFourMomentum = CartesianRMFLV(0,0,0,1);
 		for (typename std::vector<TLHEParticle*>::iterator lheParticle = lheParticles.begin(); lheParticle != lheParticles.end(); ++lheParticle)
 		{
-			if ((*lheParticle)->pdgId > 20) {
+			if ((*lheParticle)->pdgId > 21) {
 				 higgsFourMomentum = (*lheParticle)->p4;
 			}
 		}
@@ -248,7 +249,7 @@ private:
 		// boost all particles
 		for (typename std::vector<TLHEParticle*>::iterator lheParticle = lheParticles.begin(); lheParticle != lheParticles.end(); ++lheParticle)
 		{
-			particleFourMomentaHiggsCMS.push_back(boost * (*lheParticle)->p4);
+			particleFourMomentaHiggsCMS.push_back(boost((*lheParticle)->p4));
 		}
 		return particleFourMomentaHiggsCMS;
 	}
