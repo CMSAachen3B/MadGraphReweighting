@@ -35,15 +35,19 @@ class MadGraphTools
 {
 public:
 	typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float>> CartesianRMFLV;
-	
+
 	MadGraphTools(float mixingAngleOverPiHalf, std::string madgraphProcessDirectory, std::string madgraphParamCard, float alphaS,
 	              bool madGraphSortingHeavyBQuark=false, bool mg5aMCv2p5OrOlder=false);
 	virtual ~MadGraphTools();
-	
+
 	template<class TLHEParticle>
 	double GetMatrixElementSquared(std::vector<TLHEParticle*>& lheParticles, std::vector<int> const& bosonPdgIds={25}) const // the vector is sorted in-place to match MadGraph ordering scheme
 	{
 		// sorting of LHE particles for MadGraph
+		if ((*lheParticles[2]).pdgId != 25)
+		{
+			std::swap(*lheParticles[2], *lheParticles[4]);
+		}
 		if (m_madGraphSortingHeavyBQuark)
 		{
 			std::sort(lheParticles.begin(), lheParticles.begin()+2, &MadGraphTools::MadGraphParticleOrderingHeavyBQuark<TLHEParticle>);
